@@ -10,9 +10,6 @@ source ./.venv/djangodev/bin/activate
 pip install -r requirements.txt
 ```
 
-<<<<<<< Updated upstream
-THis will install django and sqlalchemy in a local venv.
-=======
 This will install django and sqlalchemy in a local venv.
 
 Once you have everything setup locally run:
@@ -20,4 +17,3 @@ Once you have everything setup locally run:
 python manage.py runserver
 ```
 from metadata-extractor/metadb to start the django server locally on port 8000. To customize the port simply include the new port at the end of the previous command.
->>>>>>> Stashed changes
