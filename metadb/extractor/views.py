@@ -5,10 +5,11 @@ from sqlalchemy.exc import SQLAlchemyError
 import urllib.parse
 
 def defaultView(request):
-    errResp="Please make sure to attach a properly formated postgres conntection string, that has then been url encoded."
-    sampleResp="Something like: postgresql%3A%2F%2FUSERNAME%3APASSWORD%40localhost%3A5432%2FDBNAME%3Fsslmode%3Ddisable "
-    alchemy_docs="https://docs.sqlalchemy.org/en/13/core/engines.html#supported-databases\n"
-    return HttpResponse(errResp+" Please fine more info at:"+alchemy_docs)
+        errResp="Please make sure to attach a properly formated postgres conntection string, that has then been url encoded."
+        sampleResp="Something like: postgresql%3A%2F%2FUSERNAME%3APASSWORD%40localhost%3A5432%2FDBNAME%3Fsslmode%3Ddisable "
+        alchemy_docs="https://docs.sqlalchemy.org/en/13/core/engines.html#supported-databases\n"
+        errDict = {"msg":errResp+sampleResp+alchemy_docs}
+        return JsonResponse(errDict)
 
 @csrf_exempt
 def metaView(request, encoded_database_connection_string):
@@ -17,8 +18,9 @@ def metaView(request, encoded_database_connection_string):
         response = extract_metadata(database_connection_string)
         return JsonResponse(response, safe=False)
     except SQLAlchemyError as err:
-        #error = ("error extracting metadata: ", err.__cause__)
+        error = ("error extracting metadata: ", err.__cause__)
         errResp="Please make sure to attach a properly formated postgres conntection string, that has then been url encoded."
         sampleResp="Something like: postgresql%3A%2F%2FUSERNAME%3APASSWORD%40localhost%3A5432%2FDBNAME%3Fsslmode%3Ddisable "
         alchemy_docs="https://docs.sqlalchemy.org/en/13/core/engines.html#supported-databases\n"
-        return HttpResponse(errResp+" Please fine more info at:"+alchemy_docs)
+        errDict = {"error":str(error), "msg":errResp+sampleResp+alchemy_docs}
+        return JsonResponse(errDict)
